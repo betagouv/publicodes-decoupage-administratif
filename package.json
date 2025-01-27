@@ -27,13 +27,15 @@
   "scripts": {
     "compile": "publicodes compile",
     "build": "yarn run compile && tsup",
-    "test": "vitest run"
+    "test": "vitest run",
+    "release": "yarn run build && changeset publish"
   },
   "peerDependencies": {
     "publicodes": "^1.5.1"
   },
   "devDependencies": {
     "@publicodes/tools": "^1.3.0-2",
+    "@svitejs/changesets-changelog-github-compact": "^1.2.0",
     "@types/jest": "^29.5.13",
     "tsup": "^8.3.5",
     "typescript": "^5.7.3",
