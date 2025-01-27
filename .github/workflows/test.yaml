@@ -25,8 +25,3 @@ jobs:
 
       - name: Compile the package
         run: yarn compile
-
-      - name: Deploy to npm
-        run: yarn deploy
-        env:
-          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
