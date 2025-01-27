@@ -55,7 +55,10 @@ export type EPCI = {
 const communes = _communes as Commune[];
 const epci = _epci as EPCI[];
 
-/** Associate each commune INSEE code to its EPCI SIREN code. */
+/** Associate each commune INSEE code to its EPCI SIREN code.
+ *
+ *  PERF: should we do this at build time?
+ */
 const epci_by_communes = Object.fromEntries(
   epci.flatMap((epci) => epci.membres.map(({ code }) => [code, epci.code])),
 );
@@ -64,10 +67,11 @@ const epci_by_communes = Object.fromEntries(
  * Returns the completed situation object corresponding to the given INSEE code.
  *
  * @param code - The INSEE code of the commune.
- * @returns The completed situation object corresponding to the given INSEE code.
+ * @returns The completed situation object corresponding to the given INSEE code. If the code is not valid (i.e. not corresponding to any commune), returns `undefined`.
+ *
  * @example
  * ```typescript
- * console.log(getSituationFromCodeINSEE("75056"))
+ * console.log(getSituationFromCodeINSEE("38185"));
  * // Output:
  * {
  *   "localisation . code insee": "'38185'",    // Grenoble
@@ -79,15 +83,16 @@ const epci_by_communes = Object.fromEntries(
  */
 export function getSituationFromCodeINSEE(
   code: string,
-): Omit<Situation, "localisation"> {
+): Omit<Situation, "localisation"> | undefined {
   const commune = communes.find((c) => c.code === code);
-
-  return {
-    "localisation . code insee": fmt(code),
-    "localisation . code epci": fmt(epci_by_communes[code]),
-    "localisation . code département": fmt(commune?.departement),
-    "localisation . code région": fmt(commune?.region),
-  };
+  if (commune) {
+    return {
+      "localisation . code insee": fmt(code),
+      "localisation . code epci": fmt(epci_by_communes[code]),
+      "localisation . code département": fmt(commune?.departement),
+      "localisation . code région": fmt(commune?.region),
+    };
+  }
 }
 
 function fmt(v: string | undefined): `'${string}'` {
