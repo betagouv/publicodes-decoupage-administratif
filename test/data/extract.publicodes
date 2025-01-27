@@ -1,0 +1,39 @@
+importer!:
+  depuis:
+    nom: "@betagouv/decoupage-administratif"
+    source: "../../publicodes-build/publicodes-decoupage-administratif.model.json"
+  dans: localisation
+  les règles:
+    - commune . code
+    - epci . nom
+    - epci . code
+    - département . code
+    - région . code
+
+localisation:
+  avec:
+    simplified:
+      valeur: région . code = '06'
+
+simple commune code:
+  applicable si: localisation . commune . code = '75101'
+
+simple commune code . inversed comparison:
+  applicable si: "'75101' = localisation . commune . code"
+
+simple epci name:
+  valeur: localisation . epci . nom = 'Bordeaux Métropole'
+
+multiple localisations:
+  applicable si:
+    une de ces conditions:
+      - localisation . epci . nom = 'Bordeaux Métropole'
+      - localisation . commune . code = '75101'
+
+multiple localisations . complex:
+  applicable si:
+    toutes ces conditions:
+      - toutes ces conditions:
+        - localisation . epci . nom = 'Bordeaux Métropole'
+        - localisation . commune . code = '75101'
+      - localisation . département . code = '75'
