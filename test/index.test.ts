@@ -36,7 +36,7 @@ describe("getFullSituationFromCommune", () => {
   });
 });
 
-describe.only("extractLocalisationFromAST", () => {
+describe("extractLocalisationFromAST", () => {
   const testRules = getModelFromSource("test/data/extract.publicodes");
   const testEngine = new Engine(testRules);
 

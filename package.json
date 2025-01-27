@@ -27,7 +27,7 @@
   "scripts": {
     "compile": "publicodes compile",
     "build": "yarn run compile && tsup",
-    "test": "vitest run",
+    "test": "yarn run compile && vitest run",
     "release": "yarn run build && changeset publish"
   },
   "peerDependencies": {
